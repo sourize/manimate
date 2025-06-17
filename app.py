@@ -426,7 +426,11 @@ class GeneratedScene(Scene):
             quality_flag = quality_settings.get(quality, quality_settings["medium_quality"])["flag"]
             
             cmd = [
-                "manim", quality_flag, code_file, "GeneratedScene",
+                "manim",
+                "render",
+                quality_flag,
+                code_file,
+                "GeneratedScene",
                 "--output_file", "output_video",
                 "--media_dir", temp_dir
             ]

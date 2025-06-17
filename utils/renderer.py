@@ -54,6 +54,7 @@ class VideoRenderer:
         
         return [
             "manim",
+            "render",
             quality_settings["flag"],
             self.code_file,
             "GeneratedScene",
