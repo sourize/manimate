@@ -16,6 +16,8 @@ license: mit
 
 This is a Hugging Face Space that generates mathematical animations using Manim and Groq AI.
 
+Last updated: 2024-03-19
+
 ## Features
 - Generate mathematical animations from text prompts
 - Powered by Groq AI for intelligent code generation
