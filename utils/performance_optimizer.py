@@ -5,47 +5,42 @@ Performance optimization utilities for Manim rendering
 import re
 from typing import Dict, Tuple
 
-# Quality settings for different performance levels
-QUALITY_SETTINGS = {
-    "low_quality": {
-        "flag": "-ql",
-        "description": "Low Quality (Fast)",
-        "resolution": "480p",
-        "fps": 30,
-        "max_duration": 10,
-        "max_objects": 20,
-        "performance_threshold": {
-            "render_time": 60,  # seconds
-            "memory_usage": 1024  # MB
-        }
-    },
-    "medium_quality": {
-        "flag": "-qm",
-        "description": "Medium Quality (Balanced)",
-        "resolution": "720p",
-        "fps": 30,
-        "max_duration": 15,
-        "max_objects": 30,
-        "performance_threshold": {
-            "render_time": 180,  # seconds
-            "memory_usage": 2048  # MB
-        }
-    }
-}
-
 class PerformanceOptimizer:
     """Optimize rendering performance and resource usage"""
     
-    # Performance thresholds
-    RENDER_TIME_THRESHOLDS = {
-        "low_quality": 60,
-        "medium_quality": 180
+    # Quality settings for different performance levels
+    QUALITY_SETTINGS = {
+        "low_quality": {
+            "flag": "-ql",
+            "description": "Low Quality (Fast)",
+            "resolution": "480p",
+            "fps": 30,
+            "max_duration": 10,
+            "max_objects": 20,
+            "performance_threshold": {
+                "render_time": 60,  # seconds
+                "memory_usage": 1024  # MB
+            }
+        },
+        "medium_quality": {
+            "flag": "-qm",
+            "description": "Medium Quality (Balanced)",
+            "resolution": "720p",
+            "fps": 30,
+            "max_duration": 15,
+            "max_objects": 30,
+            "performance_threshold": {
+                "render_time": 180,  # seconds
+                "memory_usage": 2048  # MB
+            }
+        }
     }
     
-    # Memory usage thresholds (in GB)
-    MEMORY_THRESHOLDS = {
-        "low_quality": 4.0,
-        "medium_quality": 6.0
+    # Performance thresholds
+    PERFORMANCE_THRESHOLDS = {
+        "render_time": 300,  # seconds
+        "memory_usage": 4096,  # MB
+        "cpu_usage": 80  # percentage
     }
     
     @classmethod
@@ -178,26 +173,26 @@ class PerformanceOptimizer:
         return tips
 
     def optimize_quality(self, available_memory: float, estimated_render_time: float) -> str:
-        if available_memory < self.MEMORY_THRESHOLDS["low_quality"]:
+        if available_memory < self.PERFORMANCE_THRESHOLDS["memory_usage"]:
             return "low_quality"
-        if estimated_render_time > self.RENDER_TIME_THRESHOLDS["medium_quality"]:
+        if estimated_render_time > self.PERFORMANCE_THRESHOLDS["render_time"]:
             return "low_quality"
         return "medium_quality"
 
     @staticmethod
     def estimate_render_time(quality_level: str) -> int:
         """Estimate render time based on quality level"""
-        return QUALITY_SETTINGS[quality_level]["performance_threshold"]["render_time"]
+        return PerformanceOptimizer.QUALITY_SETTINGS[quality_level]["performance_threshold"]["render_time"]
     
     @staticmethod
     def get_quality_settings(quality_level: str) -> dict:
         """Get quality settings for the specified level"""
-        return QUALITY_SETTINGS[quality_level]
+        return PerformanceOptimizer.QUALITY_SETTINGS[quality_level]
     
     @staticmethod
     def optimize_for_performance(quality_level: str, scene_complexity: int) -> dict:
         """Optimize settings based on quality level and scene complexity"""
-        settings = QUALITY_SETTINGS[quality_level].copy()
+        settings = PerformanceOptimizer.QUALITY_SETTINGS[quality_level].copy()
         
         # Adjust settings based on scene complexity
         if scene_complexity > settings["max_objects"]:
