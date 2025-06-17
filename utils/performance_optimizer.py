@@ -10,11 +10,13 @@ class PerformanceOptimizer:
     
     QUALITY_SETTINGS = {
         "low_quality": {
+            "flag": "--quality low",
             "resolution": "480p",
             "fps": 30,
             "description": "480p, 30fps - Fast rendering"
         },
         "medium_quality": {
+            "flag": "--quality medium",
             "resolution": "720p",
             "fps": 30,
             "description": "720p, 30fps - Balanced quality"
