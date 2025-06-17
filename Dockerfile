@@ -27,6 +27,15 @@ RUN apt-get update && apt-get install -y \
     gstreamer1.0-gtk3 \
     gstreamer1.0-qt5 \
     gstreamer1.0-pulseaudio \
+    # LaTeX and Font dependencies
+    texlive-latex-base \
+    texlive-latex-extra \
+    texlive-fonts-extra \
+    texlive-latex-recommended \
+    texlive-science \
+    latexmk \
+    dvisvgm \
+    fontconfig \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get clean
 
