@@ -8,18 +8,29 @@ from typing import Dict, Tuple
 class PerformanceOptimizer:
     """Optimize rendering performance and resource usage"""
     
+    # Quality settings for different performance levels
     QUALITY_SETTINGS = {
         "low_quality": {
-            "flag": "--quality low",
+            "flag": "-ql",
             "resolution": "480p",
             "fps": 30,
-            "description": "480p, 30fps - Fast rendering"
+            "max_duration": 10,
+            "max_objects": 20,
+            "performance_threshold": {
+                "render_time": 60,  # seconds
+                "memory_usage": 1024  # MB
+            }
         },
         "medium_quality": {
-            "flag": "--quality medium",
+            "flag": "-qm",
             "resolution": "720p",
             "fps": 30,
-            "description": "720p, 30fps - Balanced quality"
+            "max_duration": 15,
+            "max_objects": 30,
+            "performance_threshold": {
+                "render_time": 180,  # seconds
+                "memory_usage": 2048  # MB
+            }
         }
     }
     

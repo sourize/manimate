@@ -33,13 +33,13 @@ AVAILABLE_MODELS = {
 # Video Quality Settings
 QUALITY_SETTINGS = {
     "low_quality": {
-        "flag": "--quality low",
+        "flag": "-ql",
         "description": "Low Quality (Fast)",
         "estimated_time": 60,  # seconds
         "resolution": "480p"
     },
     "medium_quality": {
-        "flag": "--quality medium",
+        "flag": "-qm",
         "description": "Medium Quality (Balanced)",
         "estimated_time": 180,  # seconds
         "resolution": "720p"

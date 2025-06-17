@@ -26,12 +26,12 @@ ENV_VARS = {
 PERFORMANCE_CONFIG = {
     "quality_settings": {
         "low_quality": {
-            "flag": "--quality low",
+            "flag": "-ql",
             "max_duration": 10,
             "max_objects": 20
         },
         "medium_quality": {
-            "flag": "--quality medium",
+            "flag": "-qm",
             "max_duration": 15,
             "max_objects": 30
         }
@@ -56,12 +56,12 @@ AVAILABLE_MODELS = [
 
 QUALITY_SETTINGS = {
     "low_quality": {
-        "flag": "--quality low",
+        "flag": "-ql",
         "resolution": "480p",
         "fps": 30
     },
     "medium_quality": {
-        "flag": "--quality medium",
+        "flag": "-qm",
         "resolution": "720p",
         "fps": 30
     }
