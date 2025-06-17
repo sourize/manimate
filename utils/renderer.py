@@ -5,7 +5,7 @@ import time
 import logging
 import subprocess
 from pathlib import Path
-from typing import Tuple, Optional
+from typing import Tuple, Optional, Any
 
 from config.settings import QUALITY_SETTINGS, APP_SETTINGS
 from config.constants import (
