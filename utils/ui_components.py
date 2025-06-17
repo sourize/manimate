@@ -18,7 +18,7 @@ def initialize_app():
     .main-header {
         text-align: center;
         padding: 1rem 0;
-        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(70deg, #667eea 47%, #764ba2 100%);
         color: white;
         border-radius: 10px;
         margin-bottom: 2rem;
@@ -60,7 +60,7 @@ def initialize_app():
 def render_header():
     st.markdown("""
     <div class="main-header">
-        <h1>🎬 Manim Video Generator</h1>
+        <h1>🎬 Manimate: Video Generator</h1>
         <p>Transform your ideas into mathematical animations</p>
     </div>
     """, unsafe_allow_html=True)
@@ -75,10 +75,8 @@ def render_sidebar():
                 st.write(f"{status} {key.replace('_', ' ').title()}: {value}")
         
         model_options = {
-            "llama-3.3-70b-versatile": "Llama 3.3 70B (Recommended)",
-            "llama3-8b-8192": "Llama 3 8B (Fast)",
-            "mixtral-8x7b-32768": "Mixtral 8x7B (Creative)",
-            "gemma2-9b-it": "Gemma 2 9B (Efficient)"
+            "llama-3.3-70b-versatile": "Llama 3.3 70B (Most Capable)",
+            "llama3-8b-8192": "Llama 3 8B (Fast)"
         }
         selected_model = st.selectbox(
             "AI Model",
@@ -143,9 +141,11 @@ def render_main_interface():
     user_prompt = st.text_area(
         "Describe the mathematical animation you want to create:",
         height=150,
-        placeholder="Example: Create an animation showing the derivative of x² as the slope of tangent lines, with smooth transitions and clear labeling",
+        placeholder="Example: Create an animation showing the derivation of Pythagorean theorem, with smooth transitions and clear labeling",
         help="Be as descriptive as possible for best results. Mention specific mathematical concepts, colors, and visual elements."
     )
+    
+    # Show category and complexity info if there's input
     if user_prompt:
         category = PromptTemplates.detect_category(user_prompt)
         complexity = "complex" if len(user_prompt) > 100 else "medium"
@@ -154,10 +154,11 @@ def render_main_interface():
             st.info(f"📂 Detected category: **{category.title()}**")
         with col_info2:
             st.info(f"🎯 Complexity: **{complexity.title()}**")
+    
+    # Add a separate Generate button
     generate_button = st.button("🚀 Generate Animation", type="primary", disabled=not user_prompt.strip())
     
-    # example_prompt = render_examples()
-    return user_prompt, generate_button, None
+    return user_prompt, generate_button
 
 def render_footer(generator=None):
     st.markdown("---")

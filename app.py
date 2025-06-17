@@ -38,9 +38,7 @@ class ManimVideoGenerator:
         self.client = Groq(api_key=groq_api_key)
         self.available_models = {
             "llama-3.3-70b-versatile": "Llama 3.3 70B",
-            "llama3-8b-8192": "Llama 3 8B", 
-            "llama-3.1-8b-instant": "Llama 3.1 8B Instant",
-            "gemma2-9b-it": "Gemma 2 9B"
+            "llama3-8b-8192": "Llama 3 8B"
         }
         self.temp_dir = None
         self.metrics = MetricsCollector()
@@ -550,6 +548,14 @@ def process_video_generation(generator, user_prompt, selected_model, video_quali
                 if logs and st.checkbox("Show error details"):
                     st.text_area("Error Details", logs, height=200)
             
+            # Cleanup after everything is done
+            if temp_dir and os.path.exists(temp_dir):
+                try:
+                    shutil.rmtree(temp_dir)
+                    logger.info(f"Cleaned up temporary directory: {temp_dir}")
+                except Exception as e:
+                    logger.error(f"Error cleaning up temporary directory: {e}")
+            
     except Exception as e:
         error_info = ErrorHandler.get_user_friendly_error(type(e).__name__, str(e))
         st.markdown(f'<div class="error-box">❌ {error_info["user_message"]}</div>', 
@@ -562,6 +568,14 @@ def process_video_generation(generator, user_prompt, selected_model, video_quali
                 st.markdown(f"• {suggestion}")
         
         logger.error(f"Application error: {e}")
+        
+        # Cleanup in case of error
+        if 'temp_dir' in locals() and temp_dir and os.path.exists(temp_dir):
+            try:
+                shutil.rmtree(temp_dir)
+                logger.info(f"Cleaned up temporary directory after error: {temp_dir}")
+            except Exception as cleanup_error:
+                logger.error(f"Error cleaning up temporary directory after error: {cleanup_error}")
 
 def main():
     initialize_app()
@@ -597,18 +611,9 @@ def main():
     generator = ManimVideoGenerator(groq_api_key)
     
     # Render main interface
-    interface_result = render_main_interface()
+    user_prompt, generate_button = render_main_interface()
     
-    # Handle example selection or user input
-    if isinstance(interface_result[0], str) and not interface_result[1]:
-        # Example was selected
-        user_prompt = interface_result[0]
-        generate_button = True
-    else:
-        # Regular user input
-        user_prompt, generate_button = interface_result
-    
-    # Process generation if requested
+    # Process generation only if button is clicked and there's a prompt
     if generate_button and user_prompt and user_prompt.strip():
         process_video_generation(generator, user_prompt, selected_model, video_quality)
         generator.cleanup()

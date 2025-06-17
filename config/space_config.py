@@ -1,5 +1,3 @@
-"""Configuration settings for Hugging Face Spaces deployment."""
-
 import os
 
 # Space-specific settings
@@ -8,9 +6,7 @@ SPACE_CONFIG = {
     "max_video_size_mb": 50,  # Maximum video size in MB
     "allowed_models": [
         "llama-3.3-70b-versatile",
-        "llama3-8b-8192",
-        "mixtral-8x7b-32768",
-        "gemma2-9b-it"
+        "llama3-8b-8192"
     ],
     "default_quality": "medium_quality",
     "cache_ttl": 3600,  # Cache time-to-live in seconds
@@ -56,6 +52,22 @@ UI_CONFIG = {
     "show_advanced_options": False,
     "enable_metrics": True,
     "enable_error_reporting": True
+}
+
+AVAILABLE_MODELS = [
+    "llama-3.3-70b-versatile",
+    "llama3-8b-8192"
+]
+
+QUALITY_SETTINGS = {
+    "low_quality": {
+        "resolution": "480p",
+        "fps": 30
+    },
+    "medium_quality": {
+        "resolution": "720p",
+        "fps": 30
+    }
 }
 
 def get_space_config():

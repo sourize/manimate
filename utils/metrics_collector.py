@@ -20,7 +20,10 @@ class MetricsCollector:
         self.failed_renders = 0
         self.render_times: List[float] = []
         self.error_counts = defaultdict(int)
-        self.quality_usage = defaultdict(int)
+        self.quality_usage = {
+            VideoQuality.LOW.value: 0,
+            VideoQuality.MEDIUM.value: 0
+        }
         self.scene_types = defaultdict(int)
         self.start_time = time.time()
     

@@ -1,5 +1,3 @@
-"""Application settings and configuration."""
-
 from pathlib import Path
 from typing import Dict, Any
 
@@ -29,18 +27,6 @@ AVAILABLE_MODELS = {
         "description": "Fast and efficient for simpler animations",
         "max_tokens": 8192,
         "temperature": 0.7
-    },
-    "mixtral-8x7b-32768": {
-        "name": "Mixtral 8x7B",
-        "description": "Creative model with large context window",
-        "max_tokens": 32768,
-        "temperature": 0.8
-    },
-    "gemma2-9b-it": {
-        "name": "Gemma 2 9B",
-        "description": "Efficient model for basic animations",
-        "max_tokens": 8192,
-        "temperature": 0.7
     }
 }
 
@@ -57,18 +43,6 @@ QUALITY_SETTINGS = {
         "description": "Medium Quality (Balanced)",
         "estimated_time": 180,  # seconds
         "resolution": "720p"
-    },
-    "high_quality": {
-        "flag": "-qh",
-        "description": "High Quality (Detailed)",
-        "estimated_time": 300,  # seconds
-        "resolution": "1080p"
-    },
-    "production_quality": {
-        "flag": "-qk",
-        "description": "Production Quality (Best)",
-        "estimated_time": 600,  # seconds
-        "resolution": "4K"
     }
 }
 
@@ -98,7 +72,6 @@ UI_SETTINGS = {
 }
 
 def get_setting(key: str, default: Any = None) -> Any:
-    """Get a setting value by key with optional default."""
     if key in APP_SETTINGS:
         return APP_SETTINGS[key]
     if key in UI_SETTINGS:
@@ -106,7 +79,6 @@ def get_setting(key: str, default: Any = None) -> Any:
     return default
 
 def update_setting(key: str, value: Any) -> None:
-    """Update a setting value."""
     if key in APP_SETTINGS:
         APP_SETTINGS[key] = value
     elif key in UI_SETTINGS:

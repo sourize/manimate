@@ -1,24 +1,23 @@
-"""Application constants and enums."""
-
 from enum import Enum, auto
 from typing import Dict, List, Tuple
 
+# Quality levels
+LOW = "low_quality"
+MEDIUM = "medium_quality"
+
+# Model identifiers
+LLAMA_70B = "llama-3.3-70b-versatile"
+LLAMA_8B = "llama3-8b-8192"
+
 class VideoQuality(Enum):
-    """Video quality levels."""
     LOW = "low_quality"
     MEDIUM = "medium_quality"
-    HIGH = "high_quality"
-    PRODUCTION = "production_quality"
 
 class ModelType(Enum):
-    """Available AI models."""
     LLAMA_70B = "llama-3.3-70b-versatile"
     LLAMA_8B = "llama3-8b-8192"
-    MIXTRAL = "mixtral-8x7b-32768"
-    GEMMA = "gemma2-9b-it"
 
 class AnimationCategory(Enum):
-    """Categories of mathematical animations."""
     ALGEBRA = "algebra"
     GEOMETRY = "geometry"
     CALCULUS = "calculus"
@@ -28,7 +27,6 @@ class AnimationCategory(Enum):
     OTHER = "other"
 
 class ErrorType(Enum):
-    """Types of errors that can occur."""
     RENDERING_ERROR = auto()
     CODE_GENERATION_ERROR = auto()
     PROMPT_ERROR = auto()
@@ -64,26 +62,6 @@ FILE_CONSTANTS = {
     "LOG_FILE_NAME": "manimate.log"
 }
 
-# Example Prompts by Category
-EXAMPLE_PROMPTS: Dict[AnimationCategory, List[str]] = {
-    AnimationCategory.ALGEBRA: [
-        "Visualize solving x² + 3x - 4 = 0 using the quadratic formula",
-        "Show function transformations with f(x) = x² shifting and scaling"
-    ],
-    AnimationCategory.GEOMETRY: [
-        "Demonstrate the Pythagorean theorem with squares on triangle sides",
-        "Animate the construction of a regular pentagon using compass and straightedge"
-    ],
-    AnimationCategory.CALCULUS: [
-        "Show the concept of limits with a function approaching a value",
-        "Visualize area under curve using Riemann sums with rectangles"
-    ],
-    AnimationCategory.STATISTICS: [
-        "Animate the Central Limit Theorem with multiple distributions",
-        "Show correlation vs causation with scatter plot examples"
-    ]
-}
-
 # CSS Classes
 CSS_CLASSES = {
     "MAIN_HEADER": "main-header",
@@ -91,7 +69,19 @@ CSS_CLASSES = {
     "SUCCESS_BOX": "success-box",
     "ERROR_BOX": "error-box",
     "INFO_BOX": "info-box",
-    "METRIC_BOX": "metric-box"
+    "METRIC_BOX": "metric-box",
+    "header": """
+        text-align: center;
+        padding: 1rem 0;
+        background: linear-gradient(90deg, #667eea 7%, #764ba2 100%);
+        color: white;
+        border-radius: 10px;
+    """,
+    "container": """
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    """
 }
 
 # CSS Styles
@@ -125,14 +115,18 @@ STATUS_MESSAGES = {
     "ERROR": "❌ Error occurred during generation"
 }
 
-def get_example_prompts(category: AnimationCategory) -> List[str]:
-    """Get example prompts for a specific category."""
-    return EXAMPLE_PROMPTS.get(category, [])
+# Application constants
+APP_CONSTANTS = {
+    "MAX_RENDER_TIME": 300,  # seconds
+    "MAX_PROMPT_LENGTH": 1000,
+    "MIN_PROMPT_LENGTH": 10,
+    "DEFAULT_VIDEO_QUALITY": VideoQuality.MEDIUM.value,
+    "TEMP_FILE_PREFIX": "manim_",
+    "LOG_FILE_NAME": "manimate.log"
+}
 
 def get_css_class(class_name: str) -> str:
-    """Get CSS class name by key."""
     return CSS_CLASSES.get(class_name, "")
 
 def get_status_message(key: str) -> str:
-    """Get status message by key."""
     return STATUS_MESSAGES.get(key, "") 

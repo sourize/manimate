@@ -1,5 +1,3 @@
-"""Core video generation functionality."""
-
 import os
 import logging
 import tempfile
@@ -31,10 +29,8 @@ from utils.metrics_collector import MetricsCollector
 logger = logging.getLogger(__name__)
 
 class ManimVideoGenerator:
-    """Main class for generating Manim videos from prompts."""
     
     def __init__(self, groq_api_key: str):
-        """Initialize the Manim Video Generator with Groq API key."""
         self.client = Groq(api_key=groq_api_key)
         self.available_models = AVAILABLE_MODELS
         self.temp_dir = None
@@ -43,7 +39,6 @@ class ManimVideoGenerator:
         self.code_validator = CodeValidator()
         
     def enhance_prompt(self, user_prompt: str, model: str = DEFAULT_MODEL) -> str:
-        """Enhance the user prompt for better Manim code generation."""
         try:
             model_config = self.available_models[model]
             return self.prompt_manager.enhance_prompt(
@@ -59,7 +54,6 @@ class ManimVideoGenerator:
             return user_prompt
     
     def generate_manim_code(self, enhanced_prompt: str, model: str = DEFAULT_MODEL) -> str:
-        """Generate Manim code from the enhanced prompt."""
         try:
             model_config = self.available_models[model]
             return self.prompt_manager.generate_code(
@@ -75,12 +69,9 @@ class ManimVideoGenerator:
             raise
     
     def process_and_validate_code(self, raw_code: str) -> str:
-        """Process and validate the generated code."""
         try:
-            # Clean and validate code
             cleaned_code = self.code_validator.fix_common_issues(raw_code)
             
-            # Validate syntax and structure
             validation_result = self.code_validator.validate_code(cleaned_code)
             if not validation_result["is_valid"]:
                 raise ValueError(validation_result["error_message"])
@@ -92,7 +83,6 @@ class ManimVideoGenerator:
             raise
     
     def create_temp_directory(self) -> str:
-        """Create a temporary directory for Manim operations."""
         if self.temp_dir and os.path.exists(self.temp_dir):
             shutil.rmtree(self.temp_dir)
         
@@ -103,7 +93,6 @@ class ManimVideoGenerator:
         return self.temp_dir
     
     def save_code_to_file(self, code: str, temp_dir: str) -> str:
-        """Save the Manim code to a Python file."""
         code_file = os.path.join(temp_dir, FILE_CONSTANTS["SCENE_FILE_NAME"])
         try:
             with open(code_file, 'w', encoding='utf-8') as f:
@@ -120,7 +109,6 @@ class ManimVideoGenerator:
         temp_dir: str,
         quality: str = VideoQuality.MEDIUM.value
     ) -> Tuple[bool, str, str]:
-        """Render the Manim video."""
         from utils.renderer import VideoRenderer
         
         try:
@@ -139,7 +127,6 @@ class ManimVideoGenerator:
             return False, str(e), ""
     
     def cleanup(self) -> None:
-        """Clean up temporary files."""
         if self.temp_dir and os.path.exists(self.temp_dir):
             try:
                 shutil.rmtree(self.temp_dir)
@@ -149,12 +136,10 @@ class ManimVideoGenerator:
                 ErrorHandler.handle_error(ErrorType.SYSTEM_ERROR, str(e))
     
     def get_metrics_summary(self) -> Dict[str, Any]:
-        """Get a summary of generation metrics."""
         return self.metrics.get_summary()
     
     @property
     def model_options(self) -> Dict[str, str]:
-        """Get formatted model options for UI display."""
         return {
             model_id: f"{config['name']} ({config['description']})"
             for model_id, config in self.available_models.items()
@@ -162,7 +147,6 @@ class ManimVideoGenerator:
     
     @property
     def quality_options(self) -> Dict[str, str]:
-        """Get formatted quality options for UI display."""
         return {
             quality_id: config["description"]
             for quality_id, config in QUALITY_SETTINGS.items()

@@ -10,29 +10,27 @@ class PerformanceOptimizer:
     
     QUALITY_SETTINGS = {
         "low_quality": {
-            "flag": "-ql",
-            "resolution": "854x480",
-            "frame_rate": 15,
-            "description": "480p, 15fps - Fast rendering"
+            "resolution": "480p",
+            "fps": 30,
+            "description": "480p, 30fps - Fast rendering"
         },
         "medium_quality": {
-            "flag": "-qm", 
-            "resolution": "1280x720",
-            "frame_rate": 30,
-            "description": "720p, 30fps - Balanced"
-        },
-        "high_quality": {
-            "flag": "-qh",
-            "resolution": "1920x1080", 
-            "frame_rate": 60,
-            "description": "1080p, 60fps - High quality"
-        },
-        "production_quality": {
-            "flag": "-qp",
-            "resolution": "3840x2160",
-            "frame_rate": 60, 
-            "description": "4K, 60fps - Production ready"
+            "resolution": "720p",
+            "fps": 30,
+            "description": "720p, 30fps - Balanced quality"
         }
+    }
+    
+    # Performance thresholds
+    RENDER_TIME_THRESHOLDS = {
+        "low_quality": 60,
+        "medium_quality": 180
+    }
+    
+    # Memory usage thresholds (in GB)
+    MEMORY_THRESHOLDS = {
+        "low_quality": 4.0,
+        "medium_quality": 6.0
     }
     
     @classmethod
@@ -163,3 +161,10 @@ class PerformanceOptimizer:
         tips.append("Ensure sufficient disk space for temporary files")
         
         return tips
+
+    def optimize_quality(self, available_memory: float, estimated_render_time: float) -> str:
+        if available_memory < self.MEMORY_THRESHOLDS["low_quality"]:
+            return "low_quality"
+        if estimated_render_time > self.RENDER_TIME_THRESHOLDS["medium_quality"]:
+            return "low_quality"
+        return "medium_quality"
