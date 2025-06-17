@@ -112,20 +112,20 @@ class VideoRenderer:
                     return True, video_file, process.stdout
                 else:
                     self._record_metrics(False, "NoVideoFile")
-                    return False, "No video file generated", process.stderr
+                    return False, "Rendering completed but no video file was found", ""
             else:
                 self._record_metrics(False, "RenderingFailed")
-                return False, process.stderr, process.stdout
+                return False, "Rendering failed. Please check your scene code.", ""
                 
         except subprocess.TimeoutExpired:
             self._record_metrics(False, "TimeoutError")
-            return False, "Rendering timeout exceeded", ""
+            return False, "Rendering took too long and was stopped", ""
             
         except Exception as e:
             logger.error(f"Error rendering video: {e}")
             self._record_metrics(False, "RenderingError")
             ErrorHandler.handle_error(ErrorType.RENDERING_ERROR, str(e))
-            return False, f"Rendering error: {str(e)}", ""
+            return False, "An error occurred during rendering", ""
     
     @property
     def estimated_render_time(self) -> int:

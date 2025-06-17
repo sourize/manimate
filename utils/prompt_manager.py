@@ -169,6 +169,7 @@ Requirements:
 8. Include comments explaining key parts
 9. Keep animations under {ANIMATION_CONSTANTS['MAX_DURATION']} seconds total duration
 10. Use appropriate wait times between animations (between {ANIMATION_CONSTANTS['MIN_WAIT_TIME']} and {ANIMATION_CONSTANTS['MAX_WAIT_TIME']} seconds)
+11. To set background color, use: self.camera.background_color = WHITE
 
 Structure:
 ```python
@@ -176,6 +177,9 @@ from manim import *
 
 class GeneratedScene(Scene):
     def construct(self):
+        # Set background color
+        self.camera.background_color = WHITE
+        
         # Your animation code here
         pass
 ```
