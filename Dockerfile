@@ -47,10 +47,11 @@ RUN mkdir -p /tmp/manimate/output \
 # Copy requirements first to leverage Docker cache
 COPY requirements.txt .
 
-# Install Python dependencies with specific versions
-RUN pip install --no-cache-dir -r requirements.txt \
-    && pip install --no-cache-dir streamlit==1.28.0 \
-    && pip cache purge
+# Upgrade pip and install Python dependencies
+RUN python -m pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt && \
+    pip install --no-cache-dir streamlit==1.28.0 && \
+    pip cache purge
 
 # Copy the rest of the application
 COPY . .
