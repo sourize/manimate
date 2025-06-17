@@ -534,28 +534,11 @@ def process_video_generation(generator, user_prompt, selected_model, video_quali
                         )
                 else:
                     st.error("Video file not found after rendering")
-                    
+                
                 if logs and st.checkbox("Show rendering details"):
                     st.text_area("Rendering Logs", logs, height=200)
-                    
             else:
-                error_info = ErrorHandler.get_user_friendly_error("RenderingError", result)
-                st.markdown(f'<div class="error-box">❌ {error_info["user_message"]}</div>', 
-                           unsafe_allow_html=True)
-                
-                # Always show error details
-                st.markdown("**Error Details:**")
-                st.text_area("Error Message", result, height=100)
-                
-                if logs:
-                    st.markdown("**Rendering Logs:**")
-                    st.text_area("Logs", logs, height=200)
-                
-                suggestions = ErrorHandler.suggest_fixes(result)
-                if suggestions:
-                    st.markdown("**Possible solutions:**")
-                    for suggestion in suggestions:
-                        st.markdown(f"• {suggestion}")
+                st.markdown('<div class="error-box">❌ An error occurred during rendering.</div>', unsafe_allow_html=True)
             
             # Cleanup after everything is done
             if temp_dir and os.path.exists(temp_dir):
@@ -564,25 +547,8 @@ def process_video_generation(generator, user_prompt, selected_model, video_quali
                     logger.info(f"Cleaned up temporary directory: {temp_dir}")
                 except Exception as e:
                     logger.error(f"Error cleaning up temporary directory: {e}")
-            
     except Exception as e:
-        error_info = ErrorHandler.get_user_friendly_error(type(e).__name__, str(e))
-        st.markdown(f'<div class="error-box">❌ {error_info["user_message"]}</div>', 
-                   unsafe_allow_html=True)
-        
-        # Always show error details
-        st.markdown("**Error Details:**")
-        st.text_area("Error Message", str(e), height=100)
-        
-        suggestions = ErrorHandler.suggest_fixes(str(e))
-        if suggestions:
-            st.markdown("**Try these solutions:**")
-            for suggestion in suggestions:
-                st.markdown(f"• {suggestion}")
-        
-        logger.error(f"Application error: {e}")
-        
-        # Cleanup in case of error
+        st.markdown('<div class="error-box">❌ An error occurred during rendering.</div>', unsafe_allow_html=True)
         if 'temp_dir' in locals() and temp_dir and os.path.exists(temp_dir):
             try:
                 shutil.rmtree(temp_dir)
