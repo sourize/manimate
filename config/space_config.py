@@ -27,11 +27,13 @@ PERFORMANCE_CONFIG = {
     "quality_settings": {
         "low_quality": {
             "flag": "-ql",
+            "description": "Low Quality (Fast)",
             "max_duration": 10,
             "max_objects": 20
         },
         "medium_quality": {
             "flag": "-qm",
+            "description": "Medium Quality (Balanced)",
             "max_duration": 15,
             "max_objects": 30
         }
@@ -57,11 +59,13 @@ AVAILABLE_MODELS = [
 QUALITY_SETTINGS = {
     "low_quality": {
         "flag": "-ql",
+        "description": "Low Quality (Fast)",
         "resolution": "480p",
         "fps": 30
     },
     "medium_quality": {
         "flag": "-qm",
+        "description": "Medium Quality (Balanced)",
         "resolution": "720p",
         "fps": 30
     }
