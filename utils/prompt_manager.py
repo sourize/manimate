@@ -173,6 +173,7 @@ Requirements:
 12. For SVG paths, use SVGMobject instead of VMobjectFromSVGPath
 13. Always use proper animation classes (Create, Write, Transform, etc.) with self.play()
 14. For positioning, use methods like next_to(), to_edge(), to_corner() instead of direct position manipulation
+15. Do NOT use the font_size argument with get_x_axis_label or get_y_axis_label. Only use supported arguments for these methods.
 
 Structure:
 ```python
