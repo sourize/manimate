@@ -55,18 +55,23 @@ class ErrorHandler:
         r"ffmpeg.*not found": "FFmpegError",
         r"No such file or directory": "FileNotFoundError",
         r"MemoryError": "MemoryError",
-        r"Permission denied": "PermissionError"
+        r"Permission denied": "PermissionError",
+        r"Error:": "RenderingError",
+        r"Exception:": "RenderingError",
+        r"Failed to": "RenderingError",
+        r"Could not": "RenderingError"
     }
     
     # Error type to user-friendly message mapping
     ERROR_MESSAGES = {
         ErrorType.RENDERING_ERROR: {
-            "user_message": "Failed to render the animation. Please try again with a simpler scene or lower quality.",
+            "user_message": "Failed to render the animation. Please check the error details below.",
             "suggestions": [
                 "Try reducing the complexity of your animation",
                 "Lower the video quality setting",
                 "Check if Manim is properly installed",
-                "Ensure you have enough system resources"
+                "Ensure you have enough system resources",
+                "Check the error details for specific issues"
             ]
         },
         ErrorType.CODE_GENERATION_ERROR: {
@@ -88,12 +93,13 @@ class ErrorHandler:
             ]
         },
         ErrorType.SYSTEM_ERROR: {
-            "user_message": "A system error occurred. Please try again or contact support.",
+            "user_message": "A system error occurred. Please check the error details below.",
             "suggestions": [
                 "Refresh the page and try again",
                 "Check your internet connection",
                 "Ensure you have the latest version of the application",
-                "Clear your browser cache"
+                "Clear your browser cache",
+                "Check the error details for specific issues"
             ]
         },
         ErrorType.VALIDATION_ERROR: {
@@ -165,13 +171,13 @@ class ErrorHandler:
             error_info = cls.ERROR_MESSAGES.get(error_type)
         else:
             # Try to infer error type from message
-            error_type = cls._infer_error_type(error_message)
+            error_type = cls.classify_error(error_message)
             error_info = cls.ERROR_MESSAGES.get(error_type)
         
         if not error_info:
             # Fallback to generic error
             error_info = {
-                "user_message": "An unexpected error occurred. Please try again.",
+                "user_message": f"An error occurred: {error_message}",
                 "suggestions": [
                     "Refresh the page",
                     "Try a different prompt",
@@ -192,36 +198,18 @@ class ErrorHandler:
         Returns:
             List of suggested fixes
         """
-        error_type = cls._infer_error_type(error_message)
+        error_type = cls.classify_error(error_message)
         error_info = cls.ERROR_MESSAGES.get(error_type)
         
         if error_info and "suggestions" in error_info:
             return error_info["suggestions"]
         
         return [
-            "Try again with different settings",
-            "Simplify your animation",
-            "Check the example prompts",
-            "Contact support if the issue persists"
+            "Try a simpler animation",
+            "Check if Manim is properly installed",
+            "Ensure you have enough system resources",
+            "Try a different AI model"
         ]
-    
-    @classmethod
-    def _infer_error_type(cls, error_message: str) -> ErrorType:
-        """Infer the type of error from the error message.
-        
-        Args:
-            error_message: The error message to analyze
-            
-        Returns:
-            Inferred ErrorType
-        """
-        error_message_lower = error_message.lower()
-        
-        for pattern, error_type in cls.ERROR_PATTERNS.items():
-            if pattern in error_message_lower:
-                return error_type
-        
-        return ErrorType.SYSTEM_ERROR  # Default to system error if no pattern matches
     
     @classmethod
     def get_debug_info(cls, error_message: str, code: str = None) -> Dict[str, any]:

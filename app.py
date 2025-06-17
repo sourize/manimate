@@ -539,14 +539,19 @@ def process_video_generation(generator, user_prompt, selected_model, video_quali
                 st.markdown(f'<div class="error-box">❌ {error_info["user_message"]}</div>', 
                            unsafe_allow_html=True)
                 
+                # Always show error details
+                st.markdown("**Error Details:**")
+                st.text_area("Error Message", result, height=100)
+                
+                if logs:
+                    st.markdown("**Rendering Logs:**")
+                    st.text_area("Logs", logs, height=200)
+                
                 suggestions = ErrorHandler.suggest_fixes(result)
                 if suggestions:
                     st.markdown("**Possible solutions:**")
                     for suggestion in suggestions:
                         st.markdown(f"• {suggestion}")
-                
-                if logs and st.checkbox("Show error details"):
-                    st.text_area("Error Details", logs, height=200)
             
             # Cleanup after everything is done
             if temp_dir and os.path.exists(temp_dir):
@@ -560,6 +565,10 @@ def process_video_generation(generator, user_prompt, selected_model, video_quali
         error_info = ErrorHandler.get_user_friendly_error(type(e).__name__, str(e))
         st.markdown(f'<div class="error-box">❌ {error_info["user_message"]}</div>', 
                    unsafe_allow_html=True)
+        
+        # Always show error details
+        st.markdown("**Error Details:**")
+        st.text_area("Error Message", str(e), height=100)
         
         suggestions = ErrorHandler.suggest_fixes(str(e))
         if suggestions:
