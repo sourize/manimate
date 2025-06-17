@@ -170,6 +170,9 @@ Requirements:
 9. Keep animations under {ANIMATION_CONSTANTS['MAX_DURATION']} seconds total duration
 10. Use appropriate wait times between animations (between {ANIMATION_CONSTANTS['MIN_WAIT_TIME']} and {ANIMATION_CONSTANTS['MAX_WAIT_TIME']} seconds)
 11. To set background color, use: self.camera.background_color = WHITE
+12. For SVG paths, use SVGMobject instead of VMobjectFromSVGPath
+13. Always use proper animation classes (Create, Write, Transform, etc.) with self.play()
+14. For positioning, use methods like next_to(), to_edge(), to_corner() instead of direct position manipulation
 
 Structure:
 ```python
@@ -180,8 +183,20 @@ class GeneratedScene(Scene):
         # Set background color
         self.camera.background_color = WHITE
         
-        # Your animation code here
-        pass
+        # Create objects
+        obj = Circle(color=BLUE)
+        
+        # Position objects
+        obj.to_edge(UP)
+        
+        # Animate objects
+        self.play(Create(obj))
+        self.wait(1)
+        
+        # Transform objects
+        new_obj = Square(color=RED)
+        self.play(Transform(obj, new_obj))
+        self.wait(1)
 ```
 
 Generate ONLY the Python code, no explanations or markdown formatting.

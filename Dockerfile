@@ -39,10 +39,18 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get clean
 
-# Create necessary directories
+# Create necessary directories and set permissions
 RUN mkdir -p /tmp/manimate/output \
     && mkdir -p /tmp/matplotlib \
-    && chmod 777 /tmp/matplotlib
+    && mkdir -p /tmp/fontconfig \
+    && chmod 777 /tmp/matplotlib \
+    && chmod 777 /tmp/fontconfig \
+    && fc-cache -f -v
+
+# Set fontconfig environment variables
+ENV FONTCONFIG_PATH=/etc/fonts
+ENV FONTCONFIG_FILE=/etc/fonts/fonts.conf
+ENV FONTCONFIG_CACHE=/tmp/fontconfig
 
 # Copy requirements first to leverage Docker cache
 COPY requirements.txt .
