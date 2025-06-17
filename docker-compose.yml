@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  manim-app:
+    build: .
+    ports:
+      - "8501:8501"
+    volumes:
+      - .:/app
+      - /app/temp
+      - /app/output
+    environment:
+      - PYTHONUNBUFFERED=1
+      - GROQ_API_KEY=${GROQ_API_KEY}  # Will be taken from your environment
+    restart: unless-stopped 
